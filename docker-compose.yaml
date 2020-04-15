@@ -1,0 +1,38 @@
+version: "3"
+services:
+  lstags:
+    image: foxcris/docker-mirror:dev
+    environment:
+      - DOCKERMIRROR_DESTINATION_REGISTRY=registry:5000
+      - DOCKERMIRROR_CRON=* */6 * * *
+      - DOCKERMIRROR_INSECURE_REGISTRY_EX=registry:5000
+    volumes:
+      - ./mirror.yaml:/etc/lstags/mirror.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    depends_on:
+      - registry
+    networks:
+      - backend
+
+  registry:
+    restart: always
+    image: registry:2
+    ports:
+      - 5000:5000
+#    environment:
+      #REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
+      #REGISTRY_HTTP_TLS_KEY: /certs/domain.key
+      #REGISTRY_AUTH: htpasswd
+      #REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      #REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+    volumes:
+      - /home/user/docker-registry/data/var/lib/registry:/var/lib/registry
+#      - /home/user/docker-registry/data/certs:/certs
+#      - /home/user/docker-registry/data/auth:/auth
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

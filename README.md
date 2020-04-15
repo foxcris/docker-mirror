@@ -41,6 +41,19 @@ lstags:
     - postgres=11,11.7,12,12.2,latest
 ```
 
+To use the mirror in a docker client use these configuration options in /etc/docker/daemon.json
+```
+{
+  "registry-mirrors": ["http:localhost:5000"],
+  "insecure-registries": ["loaclhost:5000"]
+}
+```
+
+You then can pull images with:
+```
+docker pull localhost:5000/debian:buster
+```
+
 ## Container Tags
 
  | Tag name | Description |

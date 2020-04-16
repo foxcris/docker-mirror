@@ -71,7 +71,6 @@ services:
       - DOCKERMIRROR_CONFIGFILE=/etc/skopeo/customconfig.yaml
     volumes:
       - ./mirror.yaml:/etc/skopeo/customconfig.yaml:ro
-      - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     depends_on:
       - registry
@@ -140,7 +139,6 @@ docker create\
  --restart always\
  --name mirror\
  --volume "./mirror_default.yaml:/etc/skopeo/customconfig.yaml:ro"
- --volume "/var/run/docker.sock:/var/run/docker.sock"
  --env-file=/srv/docker-config/mirror/env_file\
  foxcris/docker-mirror:${version}
 ```

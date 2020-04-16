@@ -1,6 +1,6 @@
 version: "3"
 services:
-  lstags:
+  skopedo:
     image: foxcris/docker-mirror:dev
     environment:
       - DOCKERMIRROR_DESTINATION_REGISTRY=registry:5000

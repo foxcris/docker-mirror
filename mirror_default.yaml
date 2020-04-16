@@ -1,0 +1,15 @@
+docker.io:
+    images:
+        debian: 
+            - latest
+            - buster
+            - 10
+        ubuntu: 
+            - latest
+            - bionic
+            - 18.04
+        foxcris/docker-apacheproxy:
+            - stable
+            - dev
+            - latest
+    tls-verify: true

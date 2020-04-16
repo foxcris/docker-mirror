@@ -5,9 +5,10 @@ services:
     environment:
       - DOCKERMIRROR_DESTINATION_REGISTRY=registry:5000
       - DOCKERMIRROR_CRON=* */6 * * *
-      - DOCKERMIRROR_INSECURE_REGISTRY_EX=registry:5000
+      - DOCKERMIRROR_DESTINATION_INSECURE_REGISTRY=true
+      - DOCKERMIRROR_CONFIGFILE=/etc/skopeo/customconfig.yaml
     volumes:
-      - ./mirror.yaml:/etc/lstags/mirror.yaml:ro
+      - ./skopeo.yaml:/etc/skopeo/customconfig.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     depends_on:
@@ -19,7 +20,7 @@ services:
     restart: always
     image: registry:2
     ports:
-      - 5000:5000
+      - 127.0.0.1:5000:5000
 #    environment:
       #REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
       #REGISTRY_HTTP_TLS_KEY: /certs/domain.key
@@ -32,6 +33,9 @@ services:
 #      - /home/user/docker-registry/data/auth:/auth
     networks:
       - backend
+#     network_mode: "host"
+
+
 
 networks:
   backend:

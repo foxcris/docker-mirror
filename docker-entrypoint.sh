@@ -24,6 +24,13 @@ then
     insecure_regestry='--dest-tls-verify=false'
 fi
 
+scoped=""
+if [ "${DOCKERMIRROR_SCOPED}" = "true" ]
+then
+    scoped='--scoped'
+fi
+DOCKERMIRROR_SCOPED
+
 if [ "${DOCKERMIRROR_CRON}" != "" ]
 then
     crontime="${DOCKERMIRROR_CRON}"
@@ -31,8 +38,8 @@ else
     crontime="* */6 * * *"
 fi
 
-echo "@reboot root /usr/bin/skopeo sync ${insecure_regestry} --src yaml --dest docker ${DOCKERMIRROR_CONFIGFILE} ${DOCKERMIRROR_DESTINATION_REGISTRY} 2>&1 | logger" > /etc/cron.d/skopeo
-echo "${crontime} root /usr/bin/skopeo sync ${insecure_regestry} --src yaml --dest docker ${DOCKERMIRROR_CONFIGFILE} ${DOCKERMIRROR_DESTINATION_REGISTRY} 2>&1 | logger" >> /etc/cron.d/skopeo
+echo "@reboot root /usr/bin/skopeo sync $scoped ${insecure_regestry} --src yaml --dest docker ${DOCKERMIRROR_CONFIGFILE} ${DOCKERMIRROR_DESTINATION_REGISTRY} 2>&1 | logger" > /etc/cron.d/skopeo
+echo "${crontime} root /usr/bin/skopeo sync $scoped ${insecure_regestry} --src yaml --dest docker ${DOCKERMIRROR_CONFIGFILE} ${DOCKERMIRROR_DESTINATION_REGISTRY} 2>&1 | logger" >> /etc/cron.d/skopeo
 chmod 0644 /etc/cron.d/skopeo
 
 /etc/init.d/cron start

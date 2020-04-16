@@ -23,6 +23,7 @@ The following environment variables are available to configure the container on 
  | DOCKERMIRROR_DESTINATION_INSECURE_REGISTRY | Set to true if destination registry should be accessed via http |
  | DOCKERMIRROR_CRON | time configuration for the cron daemon to configure the periodic run times of apt-mirror. Example: ```APTMIRROR_CRON=* */6 * * *``` to sync every 6 hours.|
  | DOCKERMIRROR_CONFIGFILE | Path to the configuration (yaml) file of skopeo to use. Default=/etc/skopeo/mirror.yaml |
+ | DOCKERMIRROR_SCOPED | Set to "true" to prefix images with the source image path, so that multiple images with the same name can be stored at destination. |
 ### Configuration file
 
 The configuration file /etc/skopeo/mirror.yaml includes a list of all images and there tags which should be mirrored.
@@ -69,6 +70,7 @@ services:
       - DOCKERMIRROR_CRON=* */6 * * *
       - DOCKERMIRROR_DESTINATION_INSECURE_REGISTRY=true
       - DOCKERMIRROR_CONFIGFILE=/etc/skopeo/customconfig.yaml
+      - DOCKERMIRROR_SCOPED=true
     volumes:
       - ./mirror.yaml:/etc/skopeo/customconfig.yaml:ro
     restart: always
@@ -122,6 +124,7 @@ DOCKERMIRROR_DESTINATION_REGISTRY=registry:5000
 DOCKERMIRROR_CRON=* */6 * * *
 DOCKERMIRROR_DESTINATION_INSECURE_REGISTRY=true
 DOCKERMIRROR_CONFIGFILE=/etc/skopeo/customconfig.yaml
+DOCKERMIRROR_SCOPED=true
 ```
 
 3. Create the docker container and configure the docker networks for the container. I always create a script for that and store it under
